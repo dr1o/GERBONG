@@ -1,0 +1,17 @@
+{
+  "name": "gerbong-server",
+  "version": "1.0.0",
+  "description": "GERBONG (Gerakan Bacaan dan Arsip Gotong-Royong) — Modul 1 Express + Supabase RESTful API",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.49.4",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^4.21.2"
+  }
+}
