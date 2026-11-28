@@ -1,5 +1,5 @@
 import { NavLink, useLocation } from "react-router-dom";
-import { Users, BookOpen, UserCircle2 } from "lucide-react";
+import { Users, BookOpen, Bookmark, UserCircle2 } from "lucide-react";
 
 const NAV_ITEMS = [
   {
@@ -13,6 +13,12 @@ const NAV_ITEMS = [
     to: "/works",
     icon: BookOpen,
     matchPrefix: "/works",
+  },
+  {
+    label: "Favorit",
+    to: "/favorites",
+    icon: Bookmark,
+    matchPrefix: "/favorites",
   },
   {
     label: "Profil & Relawan",
@@ -30,7 +36,7 @@ export default function BottomNav() {
       aria-label="Navigasi Utama GERBONG"
       className="fixed bottom-0 inset-x-0 z-40 border-t border-[#D5CFC2] bg-[#F4F1EA]"
     >
-      <div className="max-w-2xl mx-auto grid grid-cols-3 px-2 pb-[max(0.25rem,env(safe-area-inset-bottom))]">
+      <div className="max-w-2xl mx-auto grid grid-cols-4 px-2 pb-[max(0.25rem,env(safe-area-inset-bottom))]">
         {NAV_ITEMS.map(({ label, to, icon: Icon, matchPrefix }) => {
           const isActive = pathname === to || pathname.startsWith(`${matchPrefix}/`);
 

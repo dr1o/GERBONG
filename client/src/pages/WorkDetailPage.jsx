@@ -14,10 +14,12 @@ import {
   XCircle,
   Download,
   ExternalLink,
+  Bookmark,
 } from "lucide-react";
 import axiosClient, { getApiErrorMessage } from "../api/axiosClient.js";
 import { useSwarm } from "../context/SwarmContext.jsx";
 import { useAuth } from "../context/AuthContext.jsx";
+import { useFavorites } from "../context/FavoritesContext.jsx";
 import EpubViewer from "../components/EpubViewer.jsx";
 import PdfViewer from "../components/PdfViewer.jsx";
 
@@ -32,6 +34,7 @@ export default function WorkDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { isAdmin } = useAuth();
+  const { isFavorite, toggleFavorite } = useFavorites();
 
   const {
     streamMagnet,
@@ -232,6 +235,7 @@ export default function WorkDetailPage() {
   const fmt = String(work.format || "EPUB").toUpperCase();
   const isPdf = fmt === "PDF";
   const authorId = work.authors?.id || work.author_id;
+  const savedFavorite = isFavorite(work.id);
 
   const progress = activeTorrent ? Number(activeTorrent.progress || 0) : 0;
   const peers = activeTorrent ? Number(activeTorrent.numPeers || 0) : 0;
@@ -252,6 +256,23 @@ export default function WorkDetailPage() {
         </Link>
 
         <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => toggleFavorite(work)}
+            aria-pressed={savedFavorite}
+            className={`inline-flex items-center gap-1.5 rounded-[2px] border px-3 py-1.5 text-xs font-medium transition-colors cursor-pointer ${
+              savedFavorite
+                ? "border-[#991B1B] bg-[#991B1B] text-[#F4F1EA]"
+                : "border-[#D5CFC2] bg-[#FAF8F3] hover:border-[#161615] text-[#161615]"
+            }`}
+          >
+            <Bookmark
+              className={`w-3.5 h-3.5 ${savedFavorite ? "text-[#F4F1EA]" : "text-[#991B1B]"}`}
+              fill={savedFavorite ? "currentColor" : "none"}
+            />
+            <span>{savedFavorite ? "Tersimpan" : "Favorit"}</span>
+          </button>
+
           <button
             type="button"
             onClick={handleShare}

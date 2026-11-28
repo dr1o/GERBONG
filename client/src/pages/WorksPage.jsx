@@ -4,6 +4,7 @@ import {
   Search,
   Plus,
   Tag,
+  Bookmark,
   ChevronRight,
   X,
   RefreshCw,
@@ -13,6 +14,7 @@ import axiosClient, { getApiErrorMessage } from "../api/axiosClient.js";
 import EmptyState from "../components/EmptyState.jsx";
 import CategoryManagerModal from "../components/CategoryManagerModal.jsx";
 import { useAuth } from "../context/AuthContext.jsx";
+import { useFavorites } from "../context/FavoritesContext.jsx";
 
 const FORMAT_TABS = [
   { key: "ALL", label: "Semua" },
@@ -22,6 +24,7 @@ const FORMAT_TABS = [
 
 export default function WorksPage() {
   const { isAdmin } = useAuth();
+  const { isFavorite, toggleFavorite } = useFavorites();
   const [works, setWorks] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -275,6 +278,7 @@ export default function WorksPage() {
         <div className="border-t border-[#D5CFC2] divide-y divide-[#D5CFC2]">
           {filteredWorks.map((work) => {
             const fmt = String(work.format || "EPUB").toUpperCase();
+            const saved = isFavorite(work.id);
 
             return (
               <Link
@@ -339,7 +343,27 @@ export default function WorksPage() {
                     )}
                   </div>
 
-                  <ChevronRight className="w-4 h-4 text-[#57534E] group-hover:text-[#991B1B] transition-colors shrink-0 mt-1" />
+                  <div className="flex items-center gap-1.5 shrink-0 mt-1">
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        toggleFavorite(work);
+                      }}
+                      aria-label={saved ? `Hapus ${work.title} dari favorit` : `Simpan ${work.title} ke favorit`}
+                      aria-pressed={saved}
+                      title={saved ? "Hapus dari Favorit" : "Simpan ke Favorit"}
+                      className={`rounded-[2px] border p-1.5 transition-colors cursor-pointer ${
+                        saved
+                          ? "border-[#991B1B] bg-[#991B1B] text-[#F4F1EA]"
+                          : "border-[#D5CFC2] bg-[#FAF8F3] text-[#57534E] hover:border-[#161615] hover:text-[#161615]"
+                      }`}
+                    >
+                      <Bookmark className="w-3.5 h-3.5" fill={saved ? "currentColor" : "none"} />
+                    </button>
+                    <ChevronRight className="w-4 h-4 text-[#57534E] group-hover:text-[#991B1B] transition-colors" />
+                  </div>
                 </div>
               </Link>
             );

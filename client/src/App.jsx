@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Link, Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { SwarmProvider } from "./context/SwarmContext.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
+import { FavoritesProvider } from "./context/FavoritesContext.jsx";
 import BottomNav from "./components/BottomNav.jsx";
 import ProtectedAdminRoute from "./components/ProtectedAdminRoute.jsx";
 import AuthorsPage from "./pages/AuthorsPage.jsx";
@@ -10,6 +11,7 @@ import AuthorFormPage from "./pages/AuthorFormPage.jsx";
 import WorksPage from "./pages/WorksPage.jsx";
 import WorkDetailPage from "./pages/WorkDetailPage.jsx";
 import WorkFormPage from "./pages/WorkFormPage.jsx";
+import FavoritesPage from "./pages/FavoritesPage.jsx";
 import AboutProfilePage from "./pages/AboutProfilePage.jsx";
 import AdminLoginPage from "./pages/AdminLoginPage.jsx";
 
@@ -26,7 +28,8 @@ function ScrollToTop() {
 export default function App() {
   return (
     <AuthProvider>
-      <SwarmProvider>
+      <FavoritesProvider>
+        <SwarmProvider>
         <div className="min-h-dvh bg-[#F4F1EA] text-[#161615]">
           <ScrollToTop />
 
@@ -95,6 +98,9 @@ export default function App() {
                 }
               />
 
+              {/* Local Favorites */}
+              <Route path="/favorites" element={<FavoritesPage />} />
+
               {/* Profile & About */}
               <Route path="/about" element={<AboutProfilePage />} />
 
@@ -109,7 +115,8 @@ export default function App() {
           {/* Persistent Bottom Navigation */}
           <BottomNav />
         </div>
-      </SwarmProvider>
+        </SwarmProvider>
+      </FavoritesProvider>
     </AuthProvider>
   );
 }
